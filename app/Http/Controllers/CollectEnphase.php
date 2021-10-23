@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Energy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Carbon\Carbon;
 
 class CollectEnphase extends Controller
 {
@@ -19,9 +19,24 @@ class CollectEnphase extends Controller
         // Get Enphase data from the Envoy on the local network
         $response = Http::get('http://192.168.1.45/production.json');
         $enphase = $response->json();
-        $time = Carbon::createFromTimestamp($enphase['production'][1]['readingTime'], 'Pacific/Auckland');
-        echo $time->toCookieString() . "<br>";
-        echo "current watts:" . $enphase['production'][1]['wNow'];
+
+        // Get and format values
+        $time = $enphase['production'][1]['readingTime']; // unix timestamp
+        $production = round($enphase['production'][1]['wNow']); // watts
+        $consumption = round($enphase['consumption'][0]['wNow']); // watts
+        $available = $production - $consumption; // watts
+
+        // Don't allow negative production value
+        if ($production < 0) {
+            $production = 0;
+        }
+
+        $energy = new Energy;
+        $energy->time = $time;
+        $energy->production = $production;
+        $energy->consumption = $consumption;
+        $energy->available = $available;
+        $energy->save();
 
         // Format
         /*
