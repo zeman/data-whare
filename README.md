@@ -1,2 +1,13 @@
-# data-whare
-Data driven home automation. 
+# Data Whare
+
+[**Whare**](https://maoridictionary.co.nz/search?idiom=&phrase=&proverb=&loan=&histLoanWords=&keywords=whare) (noun) house, building, residence, dwelling, shed, hut, habitation.
+
+Data driven home automation. Collects data from various sensors and then triggers other actions in the house.
+
+## Solar
+
+Monitor solar production from [Enphase Envoy](https://www4.enphase.com/en-in/products/envoy) and charge [Tesla](https://www.tesla.com) with excess production rather than send to the grid.
+
+## Irrigation
+
+Monitor [soil moisture](https://www.davisinstruments.com/products/soil-moisture-sensor-vantage-pro-and-vantage-pro2) via Davis Weatherlink and irrigate garden zone via [Rainmachine.](https://www.rainmachine.com)
