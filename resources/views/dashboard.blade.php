@@ -12,6 +12,8 @@
                 padding: 20px;
                 color: rgba(255,255,255,0.5);
                 font-family: sans-serif;
+                display: grid;
+                grid-gap: 20px;
             }
             .stats {
                 display: grid;
@@ -31,6 +33,21 @@
             #chart {
                 height: 400px;
                 margin-top: 20px;
+                display: grid;
+            }
+            .btn {
+                color: rgba(255,255,255,0.5);
+                background-color: #3d4852;
+                border: none;
+                border-radius: 4px;
+                padding: 5px;
+                width: 40px;
+                display: inline-block;
+                box-sizing: border-box;
+                margin-right: 5px;
+            }
+            .btn:hover, .btn-active {
+                background-color: #5e6c83;
             }
         </style>
     </head>
@@ -42,7 +59,7 @@
             watts
         </div>
         <div class="object">
-            Avergae consumption last 5min
+            Average consumption last 5min
             <div id="consumption_5min" class="stat" style="color:#67a9cf"></div>
             watts
         </div>
@@ -52,27 +69,37 @@
             watts
         </div>
     </div>
-    <div id="chart" class="object"></div>
+    <div class="object">
+        <button class="btn hours" value="24">24</button>
+        <button class="btn hours" value="12">12</button>
+        <button class="btn hours" value="6">6</button>
+        <button class="btn hours" value="3">3</button>
+        <button class="btn hours btn-active" value="1">1</button>
+        hours
+        <div id="chart"></div>
+    </div>
     <script>
+        let hours = 1;
         let chart; // global
         let production_5min = document.getElementById('production_5min');
         let consumption_5min = document.getElementById('consumption_5min');
         let available_5min = document.getElementById('available_5min');
 
         function moveChart() {
-            chart.xAxis[0].update({max:Date.now(),min:Date.now()-1000*60*60});
+            chart.xAxis[0].update({max:Date.now(),min:Date.now()-1000*60*60*hours});
         }
-        setInterval(moveChart, 100);
+        setInterval(moveChart, 250);
 
         /**
          * Request data from the server, add it to the graph and set a timeout to request again
          */
         async function requestData() {
-            const result = await fetch('http://localhost/api/energy');
+            const result = await fetch('http://localhost/api/energy?hours=' + hours);
             if (result.ok) {
                 const data = await result.json();
                 chart.series[0].setData(data.production);
                 chart.series[1].setData(data.consumption);
+                chart.xAxis[0].update({plotBands:data.charges});
                 production_5min.innerHTML = data.production_5min;
                 consumption_5min.innerHTML = data.consumption_5min;
                 available_5min.innerHTML = data.available_5min;
@@ -151,6 +178,20 @@
                 }]
             });
         });
+
+        // buttons
+        let hour_buttons = document.getElementsByClassName('hours');
+        for (let hour_button of hour_buttons) {
+            hour_button.addEventListener('click',hourClick);
+        }
+        function hourClick(e) {
+            hours = e.target.value;
+            requestData();
+            for (let hour_button of hour_buttons) {
+                hour_button.classList.remove('btn-active');
+            }
+            e.target.classList.add('btn-active');
+        }
     </script>
     </body>
 </html>

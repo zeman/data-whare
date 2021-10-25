@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\CollectEnphase;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -26,6 +27,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->call(new CollectEnphase)->everyMinute();
+        $schedule->call(new ChargeController)->everyMinute();
     }
 
     /**

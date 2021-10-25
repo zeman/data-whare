@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\EnergyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,3 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/energy', [EnergyController::class, 'latest']);
+Route::get('/charge', ChargeController::class);
