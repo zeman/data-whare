@@ -94,7 +94,7 @@
          * Request data from the server, add it to the graph and set a timeout to request again
          */
         async function requestData() {
-            const result = await fetch('http://localhost/api/energy?hours=' + hours);
+            const result = await fetch('/api/energy?hours=' + hours);
             if (result.ok) {
                 const data = await result.json();
                 chart.series[0].setData(data.production);

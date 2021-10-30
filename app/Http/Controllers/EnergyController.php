@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class EnergyController extends Controller
 {
-    public function latest(Request $request=null)
+    public function latest()
     {
         // setup data structure
         $data = [
@@ -21,10 +21,7 @@ class EnergyController extends Controller
             'charges' => [],
         ];
 
-        $hours = 1;
-        if ($request) {
-            $hours = $request->query('hours', 1);
-        }
+        $hours = request()->query('hours', 1);
 
         // get last hour of energy data
         $energies = Energy::where('time', '>', time()-60*60*$hours)->get();

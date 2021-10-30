@@ -17,7 +17,7 @@ class CreateCarsTable extends Migration
             $table->id();
             $table->string('name')->comment('name of car');
             $table->boolean('charging')->comment('is the car charging');
-            $table->boolean('amps')->comment('amps that car is charging at');
+            $table->integer('amps')->comment('amps that car is charging at');
             $table->string('teslafi_api_token')->comment('api token from teslafi');
             $table->timestamps();
         });
