@@ -5,53 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Data Whare</title>
         <script src="https://code.highcharts.com/highcharts.js"></script>
-        <style>
-            body {
-                background-color: #212326;
-                margin: 0;
-                padding: 20px;
-                color: rgba(255,255,255,0.5);
-                font-family: sans-serif;
-                display: grid;
-                grid-gap: 20px;
-            }
-            .stats {
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
-                grid-gap: 20px;
-            }
-            .stat {
-                font-size: 40px;
-                font-weight: 800;
-            }
-            .object {
-                background-color: #2e3136;
-                border-radius: 8px;
-                padding: 20px;
-                box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-            }
-            #chart {
-                height: 400px;
-                margin-top: 20px;
-                display: grid;
-            }
-            .btn {
-                color: rgba(255,255,255,0.5);
-                background-color: #3d4852;
-                border: none;
-                border-radius: 4px;
-                padding: 5px;
-                width: 40px;
-                display: inline-block;
-                box-sizing: border-box;
-                margin-right: 5px;
-            }
-            .btn:hover, .btn-active {
-                background-color: #5e6c83;
-            }
-        </style>
+        <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
     </head>
     <body>
+    @include('nav')
     <div class="stats">
         <div class="object">
             Average production last 5min

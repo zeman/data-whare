@@ -28,3 +28,12 @@ sudo apt install python3-dev
 sudo apt-get install -y python3 python3-pip
 sudo pip3 install docker-compose
 ```
+
+git clone into dir
+cd into dir
+run composer?
+./vendor/bin/sail up -d
+
+
+./vendor/bin/sail artisan make:model House -mc
+./vendor/bin/sail artisan schedule:work

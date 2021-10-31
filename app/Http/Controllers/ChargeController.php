@@ -16,7 +16,7 @@ class ChargeController extends Controller
         $available_5min = $energy['available_5min'];
 
         // get the car's current charge state
-        $car = Car::where('id', 1)->first();
+        $car = Car::all()->first();
         if (!$car) {
             return;
         }
