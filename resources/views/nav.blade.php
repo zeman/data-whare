@@ -1,9 +1,27 @@
 <div class="nav">
     <div>
-        <span class="logo">Data Whare</span>
+        <span class="logo">DataWhare</span>
         <ul>
-            <li><a href="/sun">Sun</a></li>
-            <li><a href="/water">Water</a></li>
+            <li class="active">
+                <a href="/sun">
+                    <div class="nav__icon">
+                        <svg width="15" height="15">
+                            <use href="/img/icons.svg#sun" class="icon"/>
+                        </svg>
+                    </div>
+                    <div>Sun</div>
+                </a>
+            </li>
+            <li>
+                <a href="/water">
+                    <div class="nav__icon">
+                        <svg width="15" height="15">
+                            <use href="/img/icons.svg#water" class="icon"/>
+                        </svg>
+                    </div>
+                    <div>Water</div>
+                </a>
+            </li>
         </ul>
     </div>
     <div class="nav__right">

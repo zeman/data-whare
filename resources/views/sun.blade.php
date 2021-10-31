@@ -11,17 +11,20 @@
     @include('nav')
     <div class="stats">
         <div class="object">
-            Average production last 5min
+            <span class="desktop">Average production last 5min</span>
+            <span class="mobile">Avg prod 5min</span>
             <div id="production_5min" class="stat" style="color:#ef8a62"></div>
             watts
         </div>
         <div class="object">
-            Average consumption last 5min
+            <span class="desktop">Average consumption last 5min</span>
+            <span class="mobile">Avg<br>use 5min</span>
             <div id="consumption_5min" class="stat" style="color:#67a9cf"></div>
             watts
         </div>
         <div class="object">
-            Average surplus last 5min
+            <span class="desktop">Average surplus last 5min</span>
+            <span class="mobile">Avg surplus 5min</span>
             <div id="available_5min" class="stat" style="color:#77539b"></div>
             watts
         </div>

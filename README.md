@@ -37,3 +37,4 @@ run composer?
 
 ./vendor/bin/sail artisan make:model House -mc
 ./vendor/bin/sail artisan schedule:work
+./vendor/bin/sail artisan migrate:refresh

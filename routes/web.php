@@ -16,11 +16,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('dashboard');
+    return view('sun');
 });
 
 Route::get('/sun', function () {
-    return view('dashboard');
+    return view('sun');
 });
 
 Route::get('/settings', [HouseController::class, 'index']);

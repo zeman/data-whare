@@ -1,5 +1,17 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --background: #1b1d21;
+    --level_1: #2e3136;
+    --button: #3d4852;
+    --button_highlight: #5e6e80;
+    --color_10: rgba(82, 99, 74, 0.1);
+}
+
 body {
-    background-color: #212326;
+    background-color: var(--background);
     margin: 0;
     padding: 20px;
     color: rgba(255,255,255,0.5);
@@ -26,8 +38,26 @@ a:hover {
     font-size: 40px;
     font-weight: 800;
 }
+@media (max-width: 768px) {
+    .stat {
+        font-size: 25px;
+    }
+}
+
+.mobile {
+    display: none;
+}
+@media (max-width: 768px) {
+    .mobile {
+        display: block;
+    }
+    .desktop {
+        display: none;
+    }
+}
+
 .object {
-    background-color: #2e3136;
+    background-color: var(--level_1);
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
@@ -37,9 +67,14 @@ a:hover {
     margin-top: 20px;
     display: grid;
 }
+@media (max-width: 768px) {
+    #chart {
+        height: 200px;
+    }
+}
 .btn {
     color: rgba(255,255,255,0.5);
-    background-color: #3d4852;
+    background-color: var(--button);
     border: none;
     border-radius: 4px;
     padding: 5px;
@@ -49,7 +84,7 @@ a:hover {
     margin-right: 5px;
 }
 .btn:hover, .btn-active {
-    background-color: #5e6c83;
+    background-color: var(--button_highlight);
 }
 .icon {
     --color: rgba(255,255,255,0.5);
@@ -59,22 +94,42 @@ a:hover {
 }
 .nav {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 30px;
 }
 .nav ul {
     display: inline-block;
     list-style: none;
     margin: 0;
+    padding: 0;
 }
 .nav ul li {
     display: inline-block;
-    margin-right: 20px;
+    margin-right: 1px;
+    background-color: var(--button);
+    padding: 5px 15px;
+    border-radius: 15px;
+}
+.nav ul li.active {
+    background-color: var(--button_highlight);
+}
+.nav ul li a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+}
+.nav__icon {
+    margin-right: 2px;
+    width: 15px;
+    height: 15px;
 }
 .nav__right {
     text-align: right;
+    padding-top: 5px;
 }
 .logo {
     font-weight: 800;
+    margin-right: 20px;
 }
 .form label {
     display: block;
@@ -87,6 +142,11 @@ a:hover {
     border: none;
     border-radius: 4px;
     font-size: 15px;
+}
+@media (max-width: 768px) {
+    .form input {
+        width: 100%;
+    }
 }
 .form button {
     background-color: #7b39d0;
