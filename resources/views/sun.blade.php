@@ -134,11 +134,11 @@
                     }
                 },
                 series: [{
-                    name: 'Production',
+                    name: 'Solar Production',
                     data: [],
                     color: '#ef8a62'
                 },{
-                    name: 'Consumption',
+                    name: 'House Consumption',
                     data: [],
                     color: '#67a9cf'
                 }]
