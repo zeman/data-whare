@@ -24,6 +24,7 @@ class CarController extends Controller
             // error
             echo " / teslafi failed to start charging";
             echo " / " . $teslafi['error'];
+            //print_r($teslafi);
         }
         return false;
     }

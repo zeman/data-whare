@@ -34,7 +34,7 @@ class ChargeController extends Controller
                     $charge = new Charge();
                     $charge->time = time();
                     $charge->action = "end";
-                    $charge->value = 0;
+                    $charge->amps = 0;
                     $charge->save();
                     $car->charging = false;
                     $car->amps = 0;
@@ -51,7 +51,7 @@ class ChargeController extends Controller
                         $charge = new Charge();
                         $charge->time = time();
                         $charge->action = "amps";
-                        $charge->value = $change_amps_to;
+                        $charge->amps = $change_amps_to;
                         $charge->save();
                         $car->amps = $change_amps_to;
                         $car->save();
@@ -65,7 +65,7 @@ class ChargeController extends Controller
                             $charge = new Charge();
                             $charge->time = time();
                             $charge->action = "amps";
-                            $charge->value = $change_amps_to;
+                            $charge->amps = $change_amps_to;
                             $charge->save();
                             $car->amps = $change_amps_to;
                             $car->save();
@@ -81,10 +81,11 @@ class ChargeController extends Controller
                 echo " / try start charging";
                 $start = CarController::startCharging($car);
                 if ($start) {
+                     echo " / car started charging";
                     $charge = new Charge();
                     $charge->time = time();
                     $charge->action = "start";
-                    $charge->value = $amps;
+                    $charge->amps = $amps;
                     $charge->save();
                     $car->charging = true;
                     $car->save();

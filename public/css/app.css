@@ -82,6 +82,7 @@ a:hover {
     display: inline-block;
     box-sizing: border-box;
     margin-right: 5px;
+    cursor: pointer;
 }
 .btn:hover, .btn-active {
     background-color: var(--button_highlight);
@@ -149,7 +150,7 @@ a:hover {
     }
 }
 .form button {
-    background-color: #7b39d0;
+    background-color: var(--button);
     color: white;
     font-size: 15px;
     font-weight: 800;
@@ -159,7 +160,7 @@ a:hover {
     cursor: pointer;
 }
 .form button:hover {
-    background-color: #8f4de0;
+    background-color: var(--button_highlight);
 }
 .form__group {
     margin-bottom: 30px;
