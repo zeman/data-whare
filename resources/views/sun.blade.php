@@ -36,17 +36,22 @@
         <button class="btn hours" value="3">3</button>
         <button class="btn hours btn-active" value="1">1</button>
         hours
-        <div id="chart"></div>
+        <div id="energy" class="chart"></div>
+    </div>
+    <div class="object">
+        <div id="amps" class="chart"></div>
     </div>
     <script>
         let hours = 1;
-        let chart; // global
+        let energy; // global
+        let amps; // global
         let production_5min = document.getElementById('production_5min');
         let consumption_5min = document.getElementById('consumption_5min');
         let available_5min = document.getElementById('available_5min');
 
         function moveChart() {
-            chart.xAxis[0].update({max:Date.now(),min:Date.now()-1000*60*60*hours});
+            energy.xAxis[0].update({max:Date.now(),min:Date.now()-1000*60*60*hours});
+            amps.xAxis[0].update({max:Date.now(),min:Date.now()-1000*60*60*hours});
         }
         setInterval(moveChart, 250);
 
@@ -57,9 +62,10 @@
             const result = await fetch('/api/energy?hours=' + hours);
             if (result.ok) {
                 const data = await result.json();
-                chart.series[0].setData(data.production);
-                chart.series[1].setData(data.consumption);
-                chart.xAxis[0].update({plotBands:data.charges});
+                amps.series[0].setData(data.amps);
+                energy.series[0].setData(data.production);
+                energy.series[1].setData(data.consumption);
+                energy.xAxis[0].update({plotBands:data.charges});
                 production_5min.innerHTML = data.production_5min;
                 consumption_5min.innerHTML = data.consumption_5min;
                 available_5min.innerHTML = data.available_5min;
@@ -72,9 +78,9 @@
             }
         });
         window.addEventListener('load', function () {
-            chart = new Highcharts.Chart({
+            energy = new Highcharts.Chart({
                 chart: {
-                    renderTo: 'chart',
+                    renderTo: 'energy',
                     defaultSeriesType: 'spline',
                     backgroundColor: 'rgba(0,0,0,0)',
                     events: {
@@ -135,6 +141,65 @@
                     name: 'Consumption',
                     data: [],
                     color: '#67a9cf'
+                }]
+            });
+
+            amps = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'amps',
+                    defaultSeriesType: 'column',
+                    backgroundColor: 'rgba(0,0,0,0)'
+                },
+                title: {
+                    text: undefined
+                },
+                credits: {
+                    enabled: false
+                },
+                xAxis: {
+                    type: 'datetime',
+                    tickWidth: 0,
+                    lineWidth: 0,
+                    labels: {
+                        style: {
+                            color: 'rgba(255,255,255,0.5)'
+                        }
+                    }
+                },
+                yAxis: {
+                    minPadding: 0.2,
+                    maxPadding: 0.2,
+                    gridLineColor: 'rgba(255,255,255,0.1)',
+                    title: {
+                        text: undefined
+                    },
+                    labels: {
+                        style: {
+                            color: 'rgba(255,255,255,0.5)'
+                        }
+                    }
+                },
+                legend: {
+                    itemStyle: {"color":"rgba(255,255,255,0.5)"}
+                },
+                plotOptions: {
+                    column: {
+                        borderWidth: 0,
+                    },
+                    spline: {
+                        lineWidth: 4,
+                    },
+                    series: {
+                        marker: {
+                            enabled: false,
+                            symbol: 'circle'
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Charging Amps',
+                    data: [],
+                    color: '#1ac0ba'
                 }]
             });
         });

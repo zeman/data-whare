@@ -62,13 +62,13 @@ a:hover {
     padding: 20px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
-#chart {
-    height: 400px;
+.chart {
+    height: 300px;
     margin-top: 20px;
     display: grid;
 }
 @media (max-width: 768px) {
-    #chart {
+    .chart {
         height: 200px;
     }
 }

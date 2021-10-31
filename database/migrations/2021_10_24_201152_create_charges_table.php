@@ -17,7 +17,7 @@ class CreateChargesTable extends Migration
             $table->id();
             $table->unsignedInteger('time')->comment('unix timestamp of action');
             $table->string('action')->comment('charge action, start/stop/amp');
-            $table->unsignedInteger('value')->comment('a value associated with the action eg. amp change');
+            $table->unsignedInteger('amps')->comment('charging amps');
             $table->timestamps();
         });
     }

@@ -19,6 +19,7 @@ class EnergyController extends Controller
             'available_5min' => [],
             'available' => [],
             'charges' => [],
+            'amps' => [],
         ];
 
         $hours = request()->query('hours', 1);
@@ -51,12 +52,13 @@ class EnergyController extends Controller
             $data['available_5min'] = round(array_sum($five['available']) / count($five['available']));
         }
 
-        // get last hour of charging
+        // get last hour of charging and amps
         $charge_bands = [];
         $charges = Charge::where('time', '>', time()-60*60*$hours)->get();
         $started = false;
         $start = 0;
         foreach ($charges as $charge) {
+            // work out charging plot bands
             if( $charge->action == 'start') {
                 $start = $charge->time*1000;
                 $started = true;
@@ -79,6 +81,8 @@ class EnergyController extends Controller
                     $started = false;
                 }
             }
+            // add amps
+            $data['amps'][] = [$charge->time*1000, $charge->amps];
         }
         // if there's no end then we're still charging
         if( $started ) {
