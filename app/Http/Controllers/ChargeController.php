@@ -22,12 +22,14 @@ class ChargeController extends Controller
         }
 
         // 1000 watt needed to start charging at 5amps
-        $watts_needed = 1000;
+        $watts_needed_to_start = 1000;
+        $watts_needed_to_stop = -500;
+        $amp_watts = 200;
         $amps = 5;
 
         if ($car->charging) {
             echo "charging";
-            if ($available_5min < 0) {
+            if ($available_5min < $watts_needed_to_stop) {
                 echo " / no surplus";
                 $stop =CarController::stopCharging($car);
                 if ($stop) {
@@ -43,8 +45,14 @@ class ChargeController extends Controller
             } else {
                 echo " / still have enough juice";
                 //todo: check if should increase amps
-                if ($available_5min > $watts_needed) {
-                    $change_amps_to = $car->amps + 1;
+                if ($available_5min > $watts_needed_to_start) {
+                    $amp_increase = 1;
+                    // if we still have twice the available amps then
+                    // increase the amps faster
+                    if($available_5min > $watts_needed_to_start*2) {
+                        $amp_increase = 2;
+                    }
+                    $change_amps_to = $car->amps + $amp_increase;
                     $amps = CarController::setAmps($car, $change_amps_to);
                     if ($amps) {
                         echo " / amps increased to " . $change_amps_to;
@@ -77,7 +85,7 @@ class ChargeController extends Controller
             }
         } else {
             echo "not charging";
-            if ($available_5min > $watts_needed) {
+            if ($available_5min > $watts_needed_to_start) {
                 echo " / try start charging";
                 $start = CarController::startCharging($car);
                 if ($start) {
