@@ -14,6 +14,8 @@ class ChargeController extends Controller
         $energy_json = (new EnergyController)->latest();
         $energy = json_decode($energy_json, true);
         $available_5min = $energy['available_5min'];
+        $production_5min = $energy['production_5min'];
+        $consumption_5min = $energy['consumption_5min'];
 
         // get the car's current charge state
         $car = Car::all()->first();
@@ -23,9 +25,11 @@ class ChargeController extends Controller
 
         // 1000 watt needed to start charging at 5amps
         $watts_needed_to_start = 1000;
+        $watts_below_production = 500;
+        $watts_percentage_buffer = 10;
         $watts_needed_to_stop = -500;
-        $amp_watts = 200;
-        $amps = 5;
+        $amps_start = 5;
+        $amps_lowest = 2;
 
         if ($car->charging) {
             echo "charging";
@@ -44,12 +48,18 @@ class ChargeController extends Controller
                 }
             } else {
                 echo " / still have enough juice";
-                //todo: check if should increase amps
-                if ($available_5min > $watts_needed_to_start) {
+                // work out how close to production we are
+                // and what buffer we want before changing amps
+                $watts_target = $production_5min - $watts_below_production;
+                echo " / watt target is " . $watts_target;
+                $watt_difference_from_target = $consumption_5min / $watts_target;
+                echo " / watt difference from target is " . $watt_difference_from_target;
+
+                if( $watt_difference_from_target < (1 - ($watts_percentage_buffer/100))) {
                     $amp_increase = 1;
-                    // if we still have twice the available amps then
-                    // increase the amps faster
-                    if($available_5min > $watts_needed_to_start*2) {
+                    // check if we're still a large percentage away
+                    // double buffer and bump up amps
+                    if ($watt_difference_from_target < (1 - (($watts_percentage_buffer/100) * 2))) {
                         $amp_increase = 2;
                     }
                     $change_amps_to = $car->amps + $amp_increase;
@@ -64,9 +74,15 @@ class ChargeController extends Controller
                         $car->amps = $change_amps_to;
                         $car->save();
                     }
-                } else {
-                    if ($car->amps > 2) {
-                        $change_amps_to = $car->amps - 1;
+                } elseif ($watt_difference_from_target > (1 + ($watts_percentage_buffer/100))) {
+                    if ($car->amps > $amps_lowest) {
+                        $amp_decrease = 1;
+                        // check if we're still a large percentage away
+                        // double buffer and bump up amps
+                        if ($watt_difference_from_target > (1 + (($watts_percentage_buffer/100) * 2))) {
+                            $amp_decrease = 2;
+                        }
+                        $change_amps_to = $car->amps - $amp_decrease;
                         $amps = CarController::setAmps($car, $change_amps_to);
                         if ($amps) {
                             echo " / amps decreased to " . $change_amps_to;
@@ -79,8 +95,20 @@ class ChargeController extends Controller
                             $car->save();
                         }
                     } else {
-                        echo " / already at 2 amps";
+                        echo " / already at lowest amps of " . $amps_lowest;
+                        $charge = new Charge();
+                        $charge->time = time();
+                        $charge->action = "amps";
+                        $charge->amps = $amps_lowest;
+                        $charge->save();
+                        $car->amps = $amps_lowest;
+                        $car->save();
                     }
+                } else {
+                    echo " / consumption is within the target range of "
+                        . $watts_target
+                        . " and buffer of "
+                        . $watts_percentage_buffer . "%";
                 }
             }
         } else {
@@ -93,18 +121,18 @@ class ChargeController extends Controller
                     $charge = new Charge();
                     $charge->time = time();
                     $charge->action = "start";
-                    $charge->amps = $amps;
+                    $charge->amps = $amps_start;
                     $charge->save();
                     $car->charging = true;
                     $car->save();
-                    $amps = CarController::setAmps($car, 5);
+                    $amps = CarController::setAmps($car, $amps_start);
                     if ($amps) {
-                        $car->amps = 5;
+                        $car->amps = $amps_start;
                         $car->save();
                     }
                 }
             } else {
-                echo " / not enough juice";
+                echo " / not enough spare juice, turn stuff off in the house!";
             }
         }
     }

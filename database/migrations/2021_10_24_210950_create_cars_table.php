@@ -16,10 +16,10 @@ class CreateCarsTable extends Migration
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
             $table->string('name')->comment('name of car');
-            $table->boolean('charging')->comment('is the car charging');
-            $table->integer('amps')->comment('amps that car is charging at');
-            $table->integer('soc')->comment('current state of charge percentage');
-            $table->string('teslafi_api_token')->comment('api token from teslafi');
+            $table->boolean('charging')->default(false)->comment('is the car charging');
+            $table->integer('amps')->nullable()->comment('amps that car is charging at');
+            $table->integer('soc')->nullable()->comment('current state of charge percentage');
+            $table->string('teslafi_api_token')->nullable()->comment('api token from teslafi');
             $table->timestamps();
         });
     }
