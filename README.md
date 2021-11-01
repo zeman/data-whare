@@ -8,13 +8,19 @@ Data driven home automation. Collects data from various sensors and then trigger
 
 ## Solar
 
-Monitor solar production from [Enphase Envoy](https://www4.enphase.com/en-in/products/envoy) and charge [Tesla](https://www.tesla.com) with excess production rather than send to the grid.
+Monitor solar production from [Enphase Envoy](https://www4.enphase.com/en-in/products/envoy) and charge a [Tesla](https://www.tesla.com) with excess production rather than sending it to the grid.
+
+Supported solar:
+- Enphase Envoy
+
+Supported Tesla apps:
+- Teslafi
 
 ## Irrigation
 
 Monitor [soil moisture](https://www.davisinstruments.com/products/soil-moisture-sensor-vantage-pro-and-vantage-pro2) via Davis Weatherlink and irrigate garden zone via [Rainmachine.](https://www.rainmachine.com)
 
-## Get up and running
+## Getting up and running
 
 Designed to run on a Raspberry Pi within your home local network. Uses Docker to make the setup simple.
 
@@ -25,7 +31,7 @@ Install [Ubuntu server](https://ubuntu.com/tutorials/how-to-install-ubuntu-on-yo
 
 Install Docker using normal [instructions for Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
 
-It's best to then install docker-compose via pip3 using the following command.
+It's best to then install docker-compose via pip3 using the following commands.
 
 ```
 sudo apt-get install libffi-dev libssl-dev
@@ -34,12 +40,20 @@ sudo apt-get install -y python3 python3-pip
 sudo pip3 install docker-compose
 ```
 
-git clone into dir
+git clone into a directory where you want to keep the app.
 
-cd into dir
+`git clone https://github.com/zeman/data-whare.git data-whare`
 
-todo: run composer via docker
+Open newly created directory.
 
-./vendor/bin/sail up -d
+`cd data-whare`
 
-visit IP of Pi in your browser
+Run composer via docker.
+
+`todo`
+
+Build and start the app. This can take 10min to build the Docker containers.
+
+`./vendor/bin/sail up -d`
+
+Visit the IP of you Raspberry Pi in your browser and follow the instructions.
