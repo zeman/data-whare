@@ -52,9 +52,6 @@ class HouseController extends Controller
             if ($teslafi_api_token) {
                 $car->teslafi_api_token = $teslafi_api_token;
             }
-            $car->charging = false;
-            $car->amps = 0;
-            $car->soc = 0;
             $car->save();
         }
 
