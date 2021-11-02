@@ -9,6 +9,7 @@
     </head>
     <body>
     @include('nav')
+    <div><h2>House</h2></div>
     <div class="stats">
         <div class="object">
             <span class="desktop">Average production last 5min</span>
@@ -38,6 +39,21 @@
         hours
         <div id="energy" class="chart"></div>
     </div>
+    <div><h2>Car</h2></div>
+    <div class="stats">
+        <div class="object">
+            <span>Battery</span>
+            <div id="battery" class="stat" style="color:#bebada"></div>
+        </div>
+        <div class="object">
+            <span>Max Charge</span>
+            <div id="battery_max" class="stat" style="color:#8dd3c7"></div>
+        </div>
+        <div class="object">
+            <span>Charge time</span>
+            <div id="charge_time" class="stat" style="color:#ffffb3"></div>
+        </div>
+    </div>
     <div class="object">
         <div id="amps" class="chart"></div>
     </div>
@@ -48,6 +64,7 @@
         let production_5min = document.getElementById('production_5min');
         let consumption_5min = document.getElementById('consumption_5min');
         let available_5min = document.getElementById('available_5min');
+        let battery = document.getElementById('battery');
 
         function moveChart() {
             energy.xAxis[0].update({max:Date.now(),min:Date.now()-1000*60*60*hours});
@@ -69,6 +86,9 @@
                 production_5min.innerHTML = data.production_5min;
                 consumption_5min.innerHTML = data.consumption_5min;
                 available_5min.innerHTML = data.available_5min;
+                battery.innerHTML = data.battery + '%';
+                battery_max.innerHTML = data.battery_max + '%';
+                charge_time.innerHTML = data.charge_time + 'h';
                 setTimeout(requestData, 10000);
             }
         }

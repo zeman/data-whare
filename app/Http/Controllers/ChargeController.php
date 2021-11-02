@@ -25,7 +25,7 @@ class ChargeController extends Controller
 
         // 1000 watt needed to start charging at 5amps
         $watts_needed_to_start = 1000;
-        $watts_below_production = 500;
+        $watts_below_production = 250;
         $watts_percentage_buffer = 10;
         $watts_needed_to_stop = -500;
         $amps_start = 5;
@@ -60,6 +60,7 @@ class ChargeController extends Controller
                     // check if we're still a large percentage away
                     // double buffer and bump up amps
                     if ($watt_difference_from_target < (1 - (($watts_percentage_buffer/100) * 2))) {
+                        echo " / double amps as we're a long way from target";
                         $amp_increase = 2;
                     }
                     $change_amps_to = $car->amps + $amp_increase;
@@ -105,12 +106,19 @@ class ChargeController extends Controller
                         $car->save();
                     }
                 } else {
+                    $charge = new Charge();
+                    $charge->time = time();
+                    $charge->action = "amps";
+                    $charge->amps = $car->amps;
+                    $charge->save();
                     echo " / consumption is within the target range of "
                         . $watts_target
                         . " and buffer of "
                         . $watts_percentage_buffer . "%";
                 }
             }
+            // the car is charging so lets get the current battery status as well
+            $status = CarController::getStatus($car);
         } else {
             echo "not charging";
             if ($available_5min > $watts_needed_to_start) {
@@ -127,9 +135,13 @@ class ChargeController extends Controller
                     $car->save();
                     $amps = CarController::setAmps($car, $amps_start);
                     if ($amps) {
+                         echo " / amps set";
                         $car->amps = $amps_start;
                         $car->save();
+                    } else {
+                        echo " / failed to set amps";
                     }
+                    CarController::getStatus($car);
                 }
             } else {
                 echo " / not enough spare juice, turn stuff off in the house!";

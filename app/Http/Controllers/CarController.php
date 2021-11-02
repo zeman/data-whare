@@ -58,4 +58,25 @@ class CarController extends Controller
         return false;
     }
 
+    public static function getStatus(Car $car)
+    {
+        $response = Http::get(self::$teslafi . $car->teslafi_api_token);
+        $teslafi = $response->json();
+        //print_r($teslafi);
+        if (isset($teslafi['usable_battery_level'])) {
+            echo " / usable battery is " . $teslafi['usable_battery_level'];
+            $car->battery = $teslafi['usable_battery_level'];
+        }
+        if (isset($teslafi['charge_limit_soc'])) {
+            echo " / max battery is " . $teslafi['charge_limit_soc'];
+            $car->battery_max = $teslafi['charge_limit_soc'];
+        }
+        if (isset($teslafi['time_to_full_charge'])) {
+            echo " / time to charge is " . $teslafi['time_to_full_charge'] . "h";
+            $car->charge_time = $teslafi['time_to_full_charge'];
+        }
+        $car->save();
+        return false;
+    }
+
 }

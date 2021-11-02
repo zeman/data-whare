@@ -15,7 +15,9 @@
         <div class="object">
             <form class="form" method="post" action="/settings">
                 @csrf
-                <h2>Car</h2>
+                <div class="form__group">
+                    <h2>Car</h2>
+                </div>
                 <div class="form__group">
                     <label>Name</label>
                     <input name="car_name" type="text" value="{{ $data['car_name'] }}">

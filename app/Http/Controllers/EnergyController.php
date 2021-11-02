@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Car;
 use App\Models\Charge;
 use App\Models\Energy;
 use Illuminate\Http\Request;
@@ -20,6 +21,9 @@ class EnergyController extends Controller
             'available' => [],
             'charges' => [],
             'amps' => [],
+            'battery' => "--",
+            'battery_max' => "--",
+            'charge_time' => "--"
         ];
 
         $hours = request()->query('hours', 1);
@@ -101,6 +105,14 @@ class EnergyController extends Controller
             ];
         }
         $data['charges'] = $charge_bands;
+
+        // get car battery state
+        $car = Car::all()->first();
+        if ($car->charging) {
+            $data['battery'] = $car->battery;
+            $data['battery_max'] = $car->battery_max;
+            $data['charge_time'] = $car->charge_time;
+        }
 
         return json_encode($data);
     }
