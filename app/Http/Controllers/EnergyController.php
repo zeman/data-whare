@@ -118,7 +118,9 @@ class EnergyController extends Controller
 
         // get latest log line
         $log = Log::orderBy('id', 'desc')->first();
-        $data['log'] = date("H:i", $log->time) . " - " . $log->log;
+        if ($log) {
+            $data['log'] = date("H:i", $log->time) . " - " . $log->log;
+        }
 
         return json_encode($data);
     }
