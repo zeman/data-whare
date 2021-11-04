@@ -80,7 +80,7 @@ class ChargeController extends Controller
                         $amp_decrease = 1;
                         // check if we're still a large percentage away
                         // double buffer and bump up amps
-                        if ($watt_difference_from_target > (1 + (($watts_percentage_buffer/100) * 2))) {
+                        if ($watt_difference_from_target > 1.25) {
                             $amp_decrease = 2;
                         }
                         $change_amps_to = $car->amps - $amp_decrease;
