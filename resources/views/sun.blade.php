@@ -9,7 +9,7 @@
     </head>
     <body>
     @include('nav')
-    <div><h2>House</h2></div>
+    <div class="desktop"><h2>House</h2></div>
     <div class="stats">
         <div class="object">
             <span class="desktop">Average production last 5min</span>
@@ -19,7 +19,7 @@
         </div>
         <div class="object">
             <span class="desktop">Average consumption last 5min</span>
-            <span class="mobile">Avg<br>use 5min</span>
+            <span class="mobile">Avg use 5min</span>
             <div id="consumption_5min" class="stat" style="color:#67a9cf"></div>
             watts
         </div>
@@ -39,7 +39,7 @@
         hours
         <div id="energy" class="chart"></div>
     </div>
-    <div><h2>Car</h2></div>
+    <div class="desktop"><h2>Car</h2></div>
     <div class="stats">
         <div class="object">
             <span>Battery</span>
@@ -108,6 +108,7 @@
                     renderTo: 'energy',
                     defaultSeriesType: 'spline',
                     backgroundColor: 'rgba(0,0,0,0)',
+                    //margin: [0,0,0,0],
                     events: {
                         load: requestData
                     }
@@ -142,7 +143,8 @@
                     }
                 },
                 legend: {
-                    itemStyle: {"color":"rgba(255,255,255,0.5)"}
+                    itemStyle: {"color":"rgba(255,255,255,0.5)"},
+                    padding: 0
                 },
                 plotOptions: {
                     column: {
@@ -205,7 +207,8 @@
                     }
                 },
                 legend: {
-                    itemStyle: {"color":"rgba(255,255,255,0.5)"}
+                    itemStyle: {"color":"rgba(255,255,255,0.5)"},
+                    padding: 0
                 },
                 plotOptions: {
                     column: {
