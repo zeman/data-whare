@@ -18,12 +18,12 @@ class CarController extends Controller
         $teslafi = $response->json();
         //print_r($teslafi);
         if ($teslafi['response']['result'] == 1) {
-            echo " / teslafi started charging";
+            //echo " / teslafi started charging";
             return true;
         } else {
             // error
-            echo " / teslafi failed to start charging";
-            echo " / " . $teslafi['error'];
+            //echo " / teslafi failed to start charging";
+            //echo " / " . $teslafi['error'];
             //print_r($teslafi);
         }
         return false;
@@ -36,7 +36,7 @@ class CarController extends Controller
         $teslafi = $response->json();
         //print_r($teslafi);
         if ($teslafi['response']['result'] == 1) {
-            echo " / teslafi stopped charging";
+            //echo " / teslafi stopped charging";
             return true;
         }
         return false;
@@ -49,11 +49,11 @@ class CarController extends Controller
         $teslafi = $response->json();
         //print_r($teslafi);
         if ($teslafi['response']['result'] == 1) {
-            echo " / teslafi amps set";
+            //echo " / teslafi amps set";
             return true;
         } else {
-            echo " / failed to set the amps";
-            echo " / " . $teslafi['error'];
+            //echo " / failed to set the amps";
+            //echo " / " . $teslafi['error'];
         }
         return false;
     }
@@ -64,15 +64,15 @@ class CarController extends Controller
         $teslafi = $response->json();
         //print_r($teslafi);
         if (isset($teslafi['usable_battery_level'])) {
-            echo " / usable battery is " . $teslafi['usable_battery_level'];
+            //echo " / usable battery is " . $teslafi['usable_battery_level'];
             $car->battery = $teslafi['usable_battery_level'];
         }
         if (isset($teslafi['charge_limit_soc'])) {
-            echo " / max battery is " . $teslafi['charge_limit_soc'];
+            //echo " / max battery is " . $teslafi['charge_limit_soc'];
             $car->battery_max = $teslafi['charge_limit_soc'];
         }
         if (isset($teslafi['time_to_full_charge'])) {
-            echo " / time to charge is " . $teslafi['time_to_full_charge'] . "h";
+            //echo " / time to charge is " . $teslafi['time_to_full_charge'] . "h";
             $car->charge_time = $teslafi['time_to_full_charge'];
         }
         $car->save();
