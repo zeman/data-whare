@@ -57,6 +57,9 @@
     <div class="object">
         <div id="amps" class="chart"></div>
     </div>
+    <div class="object">
+        <div id="log"></div>
+    </div>
     <script>
         let hours = 1;
         let energy; // global
@@ -65,6 +68,7 @@
         let consumption_5min = document.getElementById('consumption_5min');
         let available_5min = document.getElementById('available_5min');
         let battery = document.getElementById('battery');
+        let log = document.getElementById('log');
 
         function moveChart() {
             energy.xAxis[0].update({max:Date.now(),min:Date.now()-1000*60*60*hours});
@@ -89,6 +93,7 @@
                 battery.innerHTML = data.battery + '%';
                 battery_max.innerHTML = data.battery_max + '%';
                 charge_time.innerHTML = data.charge_time + 'h';
+                log.innerHTML = data.log;
                 setTimeout(requestData, 10000);
             }
         }

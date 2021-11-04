@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Car;
 use App\Models\Charge;
 use App\Models\Energy;
+use App\Models\Log;
 use Illuminate\Http\Request;
 
 class EnergyController extends Controller
@@ -23,7 +24,8 @@ class EnergyController extends Controller
             'amps' => [],
             'battery' => "--",
             'battery_max' => "--",
-            'charge_time' => "--"
+            'charge_time' => "--",
+            'log' => ""
         ];
 
         $hours = request()->query('hours', 1);
@@ -113,6 +115,10 @@ class EnergyController extends Controller
             $data['battery_max'] = $car->battery_max;
             $data['charge_time'] = $car->charge_time;
         }
+
+        // get latest log line
+        $log = Log::orderBy('id', 'desc')->first();
+        $data['log'] = date("H:i", $log->time) . " - " . $log->log;
 
         return json_encode($data);
     }
