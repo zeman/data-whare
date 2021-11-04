@@ -26,8 +26,8 @@ class ChargeController extends Controller
         // 1000 watt needed to start charging at 5amps
         $watts_needed_to_start = 1000;
         $watts_below_production = 250;
-        $watts_percentage_buffer = 10;
-        $watts_needed_to_stop = -500;
+        $watts_percentage_buffer = 5;
+        $watts_needed_to_stop = -1000;
         $amps_start = 5;
         $amps_lowest = 2;
 
