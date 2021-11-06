@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Car;
 use App\Models\Charge;
+use App\Models\House;
 use App\Models\Log;
 use Illuminate\Http\Request;
 
@@ -24,15 +25,26 @@ class ChargeController extends Controller
             return;
         }
 
-        // 1000 watt needed to start charging at 5amps
-        $watts_needed_to_start = 1000;
-        $watts_below_production = 250;
-        $watts_percentage_buffer = 5;
-        $watts_needed_to_stop = -1000;
+        // check we have a house to work with
+        // if not create one with defaults
+        $house = House::all()->first();
+        if (!$house) {
+            $house = new House();
+            $house->watts_start = 1000;
+            $house->watts_below = 500;
+            $house->watts_buffer = 5;
+            $house->watts_stop = -1000;
+            $house->save();
+        }
+        $watts_needed_to_start = $house->watts_start;
+        $watts_below_production = $house->watts_below;
+        $watts_percentage_buffer = $house->watts_buffer;
+        $watts_needed_to_stop = $house->watts_stop;
         $amps_start = 5;
         $amps_lowest = 2;
 
         $debug = "";
+        $log_type = "charge";
 
         if ($car->charging) {
             $debug .= "charging";
@@ -126,8 +138,9 @@ class ChargeController extends Controller
             $debug .= "not charging";
             if ($available_5min > $watts_needed_to_start) {
                 $debug .= " / try start charging";
+                //echo $debug;
                 $start = CarController::startCharging($car);
-                if ($start) {
+                if ($start['status'] == 'success') {
                     $debug .= " / car started charging";
                     $charge = new Charge();
                     $charge->time = time();
@@ -137,15 +150,21 @@ class ChargeController extends Controller
                     $car->charging = true;
                     $car->save();
                     $amps = CarController::setAmps($car, $amps_start);
-                    if ($amps) {
+                    if ($amps['status'] == 'success') {
                         $debug .= " / amps set";
                         $car->amps = $amps_start;
                         $car->save();
                     } else {
-                        $debug .= " / failed to set amps";
+                        $debug .= " / failed to set amps " . $start['message'];
+                        $log_type = "message";
                     }
                     CarController::getStatus($car);
+                } else {
+                    $debug .= " / couldn't charge " . $start['message'];
+                    $log_type = "message";
                 }
+            } elseif ($available_5min == 0) {
+                $debug .= " / sleepy time, the sun's on the other side of the planet";
             } else {
                 $debug .= " / not enough spare juice, turn stuff off in the house!";
             }
@@ -154,7 +173,7 @@ class ChargeController extends Controller
         echo $debug;
         $log = new Log();
         $log->time = time();
-        $log->type = 'charge';
+        $log->type = $log_type;
         $log->log = $debug;
         $log->save();
 

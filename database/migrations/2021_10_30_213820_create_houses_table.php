@@ -15,6 +15,10 @@ class CreateHousesTable extends Migration
     {
         Schema::create('houses', function (Blueprint $table) {
             $table->id();
+            $table->integer('watts_start')->default(1000);
+            $table->integer('watts_below')->default(500);
+            $table->integer('watts_buffer')->default(5);
+            $table->integer('watts_stop')->default(-1000);
             $table->timestamps();
         });
     }

@@ -5,9 +5,10 @@
 :root {
     --background: #1b1d21;
     --level_1: #2e3136;
-    --button: #3d4852;
-    --button_highlight: #5e6e80;
+    --button: #44515e;
+    --button_highlight: #66788d;
     --color_10: rgba(82, 99, 74, 0.1);
+    --message: #b06e13;
 }
 
 body {
@@ -28,6 +29,9 @@ a {
 }
 a:hover {
     color: rgba(255,255,255,1);
+}
+.message {
+    display: none;
 }
 .stats {
     display: grid;
@@ -61,6 +65,10 @@ a:hover {
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+.-object--message {
+    background-color: var(--message);
+    font-size: 18px;
 }
 .chart {
     height: 300px;

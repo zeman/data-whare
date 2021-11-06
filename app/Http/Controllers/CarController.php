@@ -14,25 +14,20 @@ class CarController extends Controller
     public static function startCharging(Car $car)
     {
         $response = Http::get(self::$teslafi . $car->teslafi_api_token .
-            '&command=charge_start&wake=30');
+            '&command=charge_start&wake=50');
         $teslafi = $response->json();
         //print_r($teslafi);
-        if ($teslafi['response']['result'] == 1) {
-            //echo " / teslafi started charging";
-            return true;
+        if (isset($teslafi['response']['result']) && $teslafi['response']['result'] == 1) {
+            return ['status' => 'success', 'message' => ''];
         } else {
-            // error
-            //echo " / teslafi failed to start charging";
-            //echo " / " . $teslafi['error'];
-            //print_r($teslafi);
+            return ['status' => 'error', 'message' => $teslafi['error']];
         }
-        return false;
     }
 
     public static function stopCharging(Car $car)
     {
         $response = Http::get(self::$teslafi . $car->teslafi_api_token .
-            '&command=charge_stop&wake=30');
+            '&command=charge_stop&wake=50');
         $teslafi = $response->json();
         //print_r($teslafi);
         if ($teslafi['response']['result'] == 1) {
@@ -48,14 +43,11 @@ class CarController extends Controller
             '&command=set_charging_amps&charging_amps=' . $amps . '&wake=30');
         $teslafi = $response->json();
         //print_r($teslafi);
-        if ($teslafi['response']['result'] == 1) {
-            //echo " / teslafi amps set";
-            return true;
+        if (isset($teslafi['response']['result']) && $teslafi['response']['result'] == 1) {
+            return ['status' => 'success', 'message' => ''];
         } else {
-            //echo " / failed to set the amps";
-            //echo " / " . $teslafi['error'];
+            return ['status' => 'error', 'message' => $teslafi['error']];
         }
-        return false;
     }
 
     public static function getStatus(Car $car)

@@ -15,7 +15,7 @@ class CreateCarsTable extends Migration
     {
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->comment('name of car');
+            $table->string('name')->nullable()->comment('name of car');
             $table->boolean('charging')->default(false)->comment('is the car charging');
             $table->integer('amps')->nullable()->comment('amps that car is charging at');
             $table->integer('battery')->nullable()->comment('current state of charge percentage');

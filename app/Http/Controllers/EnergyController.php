@@ -25,7 +25,9 @@ class EnergyController extends Controller
             'battery' => "--",
             'battery_max' => "--",
             'charge_time' => "--",
-            'log' => ""
+            'log' => "",
+            'log_type' => "",
+            'message' => ""
         ];
 
         $hours = request()->query('hours', 1);
@@ -110,16 +112,21 @@ class EnergyController extends Controller
 
         // get car battery state
         $car = Car::all()->first();
-        if ($car->charging) {
-            $data['battery'] = $car->battery;
-            $data['battery_max'] = $car->battery_max;
-            $data['charge_time'] = $car->charge_time;
+        if ($car) {
+            if ($car->charging) {
+                $data['battery'] = $car->battery;
+                $data['battery_max'] = $car->battery_max;
+                $data['charge_time'] = $car->charge_time;
+            }
+        } else {
+            $data['message'] = "Hi there! To get started add the Teslafi API token for your car in the <a href='/settings'>Settings.</a>";
         }
 
         // get latest log line
         $log = Log::orderBy('id', 'desc')->first();
         if ($log) {
             $data['log'] = date("H:i", $log->time) . " - " . $log->log;
+            $data['log_type'] = $log->type;
         }
 
         return json_encode($data);

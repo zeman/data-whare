@@ -2,7 +2,7 @@
     <div>
         <span class="logo">DataWhare</span>
         <ul>
-            <li class="active">
+            <li @if ($nav == 'sun') class="active" @endif>
                 <a href="/sun">
                     <div class="nav__icon">
                         <svg width="15" height="15">
@@ -12,7 +12,7 @@
                     <div>Sun</div>
                 </a>
             </li>
-            <li>
+            <li @if ($nav == 'water') class="active" @endif>
                 <a href="/water">
                     <div class="nav__icon">
                         <svg width="15" height="15">

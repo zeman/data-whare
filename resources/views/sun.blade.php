@@ -3,12 +3,13 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Data Whare</title>
+        <title>DataWhare</title>
         <script src="https://code.highcharts.com/highcharts.js"></script>
         <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
     </head>
     <body>
-    @include('nav')
+    @include('nav', ['nav' => 'sun'])
+    <div id="message" class="object -object--message message"></div>
     <div class="desktop"><h2>House</h2></div>
     <div class="stats">
         <div class="object">
@@ -69,6 +70,7 @@
         let available_5min = document.getElementById('available_5min');
         let battery = document.getElementById('battery');
         let log = document.getElementById('log');
+        let message = document.getElementById('message');
 
         function moveChart() {
             energy.xAxis[0].update({max:Date.now(),min:Date.now()-1000*60*60*hours});
@@ -94,6 +96,19 @@
                 battery_max.innerHTML = data.battery_max + '%';
                 charge_time.innerHTML = data.charge_time + 'h';
                 log.innerHTML = data.log;
+                // check for main message
+                if (data.message !== '') {
+                    message.innerHTML = data.message;
+                    message.style.display = 'block';
+                } else {
+                    // check for log message
+                    if (data.log_type === 'message') {
+                        message.innerHTML = data.log;
+                        message.style.display = 'block';
+                    } else {
+                        message.style.display = 'none';
+                    }
+                }
                 setTimeout(requestData, 10000);
             }
         }

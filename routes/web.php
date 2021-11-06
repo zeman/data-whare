@@ -22,6 +22,9 @@ Route::get('/', function () {
 Route::get('/sun', function () {
     return view('sun');
 });
+Route::get('/water', function () {
+    return view('water');
+});
 
 Route::get('/settings', [HouseController::class, 'index']);
 Route::post('/settings', [HouseController::class, 'store']);
