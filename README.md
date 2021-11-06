@@ -26,7 +26,7 @@ Designed to run on a Raspberry Pi within your home local network. Uses Docker to
 
 ### Docker on Raspberry Pi
 
-Install [Ubuntu server](https://ubuntu.com/tutorials/how-to-install-ubuntu-on-your-raspberry-pi#1-overview
+Install [Ubuntu Server 20 LTS 64-bit](https://ubuntu.com/tutorials/how-to-install-ubuntu-on-your-raspberry-pi#1-overview
 ) on your Raspberry Pi.
 
 Install Docker using normal [instructions for Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
@@ -50,10 +50,13 @@ Open newly created directory.
 
 Run composer via docker.
 
-`todo`
+`docker run --rm --volume $PWD:/app composer:latest composer install`
 
 Build and start the app. This can take 10min to build the Docker containers.
 
 `./vendor/bin/sail up -d`
+`cp .env.example .env`
+`./vendor/bin/sail php artisan key:generate`
+`./vendor/bin/sail php artisan migrate`
 
 Visit the IP of you Raspberry Pi in your browser and follow the instructions.
