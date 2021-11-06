@@ -56,7 +56,14 @@ Build and start the app. This can take 10min to build the Docker containers.
 
 `./vendor/bin/sail up -d`
 `cp .env.example .env`
-`./vendor/bin/sail php artisan key:generate`
-`./vendor/bin/sail php artisan migrate`
+`./vendor/bin/sail artisan key:generate`
+`./vendor/bin/sail artisan migrate`
+
+Open up a new screen process to run scheduled jobs.
+
+`screen`
+`./vendor/bin/sail artisan schedule:work`
+`control+a` then `d` to exit screen while leaving the process running
+`screen -r` to resume the screen session
 
 Visit the IP of you Raspberry Pi in your browser and follow the instructions.

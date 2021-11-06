@@ -163,7 +163,7 @@ class ChargeController extends Controller
                     $debug .= " / couldn't charge " . $start['message'];
                     $log_type = "message";
                 }
-            } elseif ($available_5min == 0) {
+            } elseif ($production_5min == 0) {
                 $debug .= " / sleepy time, the sun's on the other side of the planet";
             } else {
                 $debug .= " / not enough spare juice, turn stuff off in the house!";
