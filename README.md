@@ -100,3 +100,12 @@ You can then exit the screen process and leave it running on your Pi.
 `control+a` then `d` 
 
 Visit the IP of your Raspberry Pi in your browser and follow the instructions.
+
+### Updating
+
+To update the app, git pull from the app directory and then rebuild the database. This will also reset all your data.
+
+```
+git pull
+./vendor/bin/sail artisan migrate:refresh
+```
