@@ -152,6 +152,9 @@ a:hover {
     border-radius: 4px;
     font-size: 15px;
 }
+.form select {
+    padding: 5px 10px;
+}
 @media (max-width: 768px) {
     .form input {
         width: 100%;

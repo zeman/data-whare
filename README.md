@@ -8,17 +8,18 @@ Data driven home automation. Collects data from various sensors and then trigger
 
 ## Sun
 
-Monitor solar production from [Enphase Envoy](https://www4.enphase.com/en-in/products/envoy) and charge a [Tesla](https://www.tesla.com) with excess production rather than sending it to the grid. The charging rate (amps) of the Tesla is adjusted once per minute to use surplus power.
+Monitor solar production and charge a Tesla with excess production rather than sending it to the grid. The charging rate (amps) of the Tesla is adjusted once per minute to use surplus power.
 
-Supported solar:
+Supported solar inverters:
 - Enphase Envoy
+- Fronius
 
 Supported Tesla apps:
 - Teslafi
 
 ## Water
 
-Monitor [soil moisture](https://www.davisinstruments.com/products/soil-moisture-sensor-vantage-pro-and-vantage-pro2) via Davis Weatherlink and irrigate garden zones via [Rainmachine.](https://www.rainmachine.com)
+Coming next: Monitor [soil moisture](https://www.davisinstruments.com/products/soil-moisture-sensor-vantage-pro-and-vantage-pro2) via Davis Weatherlink and irrigate garden zones via [Rainmachine.](https://www.rainmachine.com)
 
 ## Getting up and running
 

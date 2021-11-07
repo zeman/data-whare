@@ -15,6 +15,10 @@ class ChargeController extends Controller
         // get available power for the last 5min
         $energy_json = (new EnergyController)->latest();
         $energy = json_decode($energy_json, true);
+        //check we have data
+        if(empty($energy['consumption_5min'])) {
+            return;
+        }
         $available_5min = $energy['available_5min'];
         $production_5min = $energy['production_5min'];
         $consumption_5min = $energy['consumption_5min'];
@@ -40,8 +44,8 @@ class ChargeController extends Controller
         $watts_below_production = $house->watts_below;
         $watts_percentage_buffer = $house->watts_buffer;
         $watts_needed_to_stop = $house->watts_stop;
-        $amps_start = 5;
-        $amps_lowest = 2;
+        $amps_start = $watts_needed_to_start / 200; // 200 watts per amp at 240v, need to add 120v setting
+        $amps_lowest = 1;
 
         $debug = "";
         $log_type = "charge";

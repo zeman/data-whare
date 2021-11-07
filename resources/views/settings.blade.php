@@ -28,6 +28,22 @@
                 <input name="teslafi_api_token" type="text" value="{{ $data['teslafi_api_token'] }}">
             </div>
             <div class="form__group">
+                <h2>Solar System</h2>
+            </div>
+            <div class="form__group">
+                <label>Inverter</label>
+                <select name="solar_type">
+                    <option value="enphase" @if ($data['solar_type'] == 'enphase') selected @endif>Enphase</option>
+                    <option value="fronius" @if ($data['solar_type'] == 'fronius') selected @endif>Fronius</option>
+                </select>
+            </div>
+            <div class="form__group">
+                <label>Inverter IP address</label>
+                <p>You'll want to allocate your inverter a static IP via your internet router so it doesn't change on reboot.<br>
+                Static IP is optional for Enphase Envoy.</p>
+                <input name="solar_ip" type="text" value="{{ $data['solar_ip'] }}">
+            </div>
+            <div class="form__group">
                 <h2>Solar Usage Behaviour</h2>
             </div>
             <div class="form__group">

@@ -33,6 +33,8 @@ class HouseController extends Controller
             "status" => "view",
             "car_name"=> $car_name,
             "teslafi_api_token" => $teslafi_api_token,
+            "solar_type" => $house->solar_type,
+            "solar_ip" => $house->solar_ip,
             "watts_start" => $house->watts_start,
             "watts_below" => $house->watts_below,
             "watts_buffer" => $house->watts_buffer,
@@ -73,6 +75,8 @@ class HouseController extends Controller
         $house = House::all()->first();
 
         if ($house) {
+            $house->solar_type = request('solar_type');
+            $house->solar_ip = request('solar_ip');
             $house->watts_start = request('watts_start');
             $house->watts_below = request('watts_below');
             $house->watts_buffer = request('watts_buffer');
@@ -84,6 +88,8 @@ class HouseController extends Controller
             "status" => "saved",
             "car_name"=> $car->name,
             "teslafi_api_token" => $car->teslafi_api_token,
+            "solar_type" => $house->solar_type,
+            "solar_ip" => $house->solar_ip,
             "watts_start" => $house->watts_start,
             "watts_below" => $house->watts_below,
             "watts_buffer" => $house->watts_buffer,
