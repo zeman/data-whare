@@ -38,6 +38,8 @@ class ChargeController extends Controller
             $house->watts_below = 500;
             $house->watts_buffer = 5;
             $house->watts_stop = -1000;
+            $house->amp_min = 1;
+            $house->amp_max = 32;
             $house->save();
         }
         $watts_needed_to_start = $house->watts_start;
@@ -45,7 +47,13 @@ class ChargeController extends Controller
         $watts_percentage_buffer = $house->watts_buffer;
         $watts_needed_to_stop = $house->watts_stop;
         $amps_start = $watts_needed_to_start / 200; // 200 watts per amp at 240v, need to add 120v setting
-        $amps_lowest = 1;
+
+        // check starting amps is above/below min/max amps
+        if ($amps_start < $house->amp_min) {
+            $amps_start = $house->amp_min;
+        } elseif ($amps_start > $house->amp_max) {
+            $amps_start = $house->amp_max;
+        }
 
         $debug = "";
         $log_type = "charge";
@@ -53,7 +61,7 @@ class ChargeController extends Controller
         if ($car->charging) {
             $debug .= "charging";
             if ($available_5min < $watts_needed_to_stop) {
-                $debug .= " / no surplus";
+                $debug .= " / no surplus, try to stop charging";
                 $stop =CarController::stopCharging($car);
                 if ($stop) {
                     $charge = new Charge();
@@ -64,9 +72,10 @@ class ChargeController extends Controller
                     $car->charging = false;
                     $car->amps = 0;
                     $car->save();
+                    $debug .= " / charging stopped";
                 }
             } else {
-                $debug .= " / still have enough juice";
+                $debug .= " / still have enough spare juice";
                 // work out how close to production we are
                 // and what buffer we want before changing amps
                 $watts_target = $production_5min - $watts_below_production;
@@ -83,26 +92,36 @@ class ChargeController extends Controller
                         $amp_increase = 2;
                     }
                     $change_amps_to = $car->amps + $amp_increase;
-                    $amps = CarController::setAmps($car, $change_amps_to);
-                    if ($amps) {
-                        $debug .= " / amps increased to " . $change_amps_to;
-                        $charge = new Charge();
-                        $charge->time = time();
-                        $charge->action = "amps";
-                        $charge->amps = $change_amps_to;
-                        $charge->save();
-                        $car->amps = $change_amps_to;
-                        $car->save();
+                    if ($change_amps_to > $house->amp_max) {
+                        $change_amps_to = $house->amp_max;
+                        $debug .= " / amps at max";
+                    }
+                    if ($change_amps_to !== $car->amps) {
+                        $amps = CarController::setAmps($car, $change_amps_to);
+                        if ($amps) {
+                            $debug .= " / amps increased to " . $change_amps_to;
+                            $charge = new Charge();
+                            $charge->time = time();
+                            $charge->action = "amps";
+                            $charge->amps = $change_amps_to;
+                            $charge->save();
+                            $car->amps = $change_amps_to;
+                            $car->save();
+                        }
                     }
                 } elseif ($watt_difference_from_target > (1 + ($watts_percentage_buffer/100))) {
-                    if ($car->amps > $amps_lowest) {
-                        $amp_decrease = 1;
-                        // check if we're still a large percentage away
-                        // double buffer and bump up amps
-                        if ($watt_difference_from_target > 1.25) {
-                            $amp_decrease = 2;
-                        }
-                        $change_amps_to = $car->amps - $amp_decrease;
+                    $amp_decrease = 1;
+                    // check if we're still a large percentage away
+                    // double buffer and bump up amps
+                    if ($watt_difference_from_target > 1.25) {
+                        $amp_decrease = 2;
+                    }
+                    $change_amps_to = $car->amps - $amp_decrease;
+                    if ($change_amps_to < $house->amp_min) {
+                        $change_amps_to = $house->amp_min;
+                        $debug .= " / amps at min";
+                    }
+                    if ($change_amps_to !== $car->amps) {
                         $amps = CarController::setAmps($car, $change_amps_to);
                         if ($amps) {
                             $debug .= " / amps decreased to " . $change_amps_to;
@@ -114,15 +133,6 @@ class ChargeController extends Controller
                             $car->amps = $change_amps_to;
                             $car->save();
                         }
-                    } else {
-                        $debug .= " / already at lowest amps of " . $amps_lowest;
-                        $charge = new Charge();
-                        $charge->time = time();
-                        $charge->action = "amps";
-                        $charge->amps = $amps_lowest;
-                        $charge->save();
-                        $car->amps = $amps_lowest;
-                        $car->save();
                     }
                 } else {
                     $charge = new Charge();
@@ -142,7 +152,6 @@ class ChargeController extends Controller
             $debug .= "not charging";
             if ($available_5min > $watts_needed_to_start) {
                 $debug .= " / try start charging";
-                //echo $debug;
                 $start = CarController::startCharging($car);
                 if ($start['status'] == 'success') {
                     $debug .= " / car started charging";

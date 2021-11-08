@@ -28,6 +28,16 @@
                 <input name="teslafi_api_token" type="text" value="{{ $data['teslafi_api_token'] }}">
             </div>
             <div class="form__group">
+                <label>Amps Minimum</label>
+                <p>Minimum charge rate in amps.</p>
+                <input name="amp_min" type="text" value="{{ $data['amp_min'] }}">
+            </div>
+            <div class="form__group">
+                <label>Amps Maximum</label>
+                <p>Maximum charge rate in amps. Adjust this to match your wall charger's maximum amps.</p>
+                <input name="amp_max" type="text" value="{{ $data['amp_max'] }}">
+            </div>
+            <div class="form__group">
                 <h2>Solar System</h2>
             </div>
             <div class="form__group">

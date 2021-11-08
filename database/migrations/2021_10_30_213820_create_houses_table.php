@@ -21,6 +21,8 @@ class CreateHousesTable extends Migration
             $table->integer('watts_below')->default(500);
             $table->integer('watts_buffer')->default(5);
             $table->integer('watts_stop')->default(-1000);
+            $table->integer('amps_min')->default(1);
+            $table->integer('amps_max')->default(32);
             $table->timestamps();
         });
     }
