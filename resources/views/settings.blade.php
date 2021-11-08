@@ -30,12 +30,12 @@
             <div class="form__group">
                 <label>Amps Minimum</label>
                 <p>Minimum charge rate in amps.</p>
-                <input name="amp_min" type="text" value="{{ $data['amp_min'] }}">
+                <input name="amps_min" type="text" value="{{ $data['amps_min'] }}">
             </div>
             <div class="form__group">
                 <label>Amps Maximum</label>
                 <p>Maximum charge rate in amps. Adjust this to match your wall charger's maximum amps.</p>
-                <input name="amp_max" type="text" value="{{ $data['amp_max'] }}">
+                <input name="amps_max" type="text" value="{{ $data['amps_max'] }}">
             </div>
             <div class="form__group">
                 <h2>Solar System</h2>

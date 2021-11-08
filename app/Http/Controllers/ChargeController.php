@@ -38,8 +38,8 @@ class ChargeController extends Controller
             $house->watts_below = 500;
             $house->watts_buffer = 5;
             $house->watts_stop = -1000;
-            $house->amp_min = 1;
-            $house->amp_max = 32;
+            $house->amps_min = 1;
+            $house->amps_max = 32;
             $house->save();
         }
         $watts_needed_to_start = $house->watts_start;
@@ -49,10 +49,10 @@ class ChargeController extends Controller
         $amps_start = $watts_needed_to_start / 200; // 200 watts per amp at 240v, need to add 120v setting
 
         // check starting amps is above/below min/max amps
-        if ($amps_start < $house->amp_min) {
-            $amps_start = $house->amp_min;
-        } elseif ($amps_start > $house->amp_max) {
-            $amps_start = $house->amp_max;
+        if ($amps_start < $house->amps_min) {
+            $amps_start = $house->amps_min;
+        } elseif ($amps_start > $house->amps_max) {
+            $amps_start = $house->amps_max;
         }
 
         $debug = "";
@@ -92,8 +92,8 @@ class ChargeController extends Controller
                         $amp_increase = 2;
                     }
                     $change_amps_to = $car->amps + $amp_increase;
-                    if ($change_amps_to > $house->amp_max) {
-                        $change_amps_to = $house->amp_max;
+                    if ($change_amps_to > $house->amps_max) {
+                        $change_amps_to = $house->amps_max;
                         $debug .= " / amps at max";
                     }
                     if ($change_amps_to !== $car->amps) {
@@ -117,8 +117,8 @@ class ChargeController extends Controller
                         $amp_decrease = 2;
                     }
                     $change_amps_to = $car->amps - $amp_decrease;
-                    if ($change_amps_to < $house->amp_min) {
-                        $change_amps_to = $house->amp_min;
+                    if ($change_amps_to < $house->amps_min) {
+                        $change_amps_to = $house->amps_min;
                         $debug .= " / amps at min";
                     }
                     if ($change_amps_to !== $car->amps) {

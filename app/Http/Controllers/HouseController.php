@@ -19,8 +19,8 @@ class HouseController extends Controller
             $house->watts_below = 500;
             $house->watts_buffer = 5;
             $house->watts_stop = -1000;
-            $house->amp_min = 1;
-            $house->amp_max = 32;
+            $house->amps_min = 1;
+            $house->amps_max = 32;
             $house->save();
         }
         // see if we have a car to work with
@@ -41,8 +41,8 @@ class HouseController extends Controller
             "watts_below" => $house->watts_below,
             "watts_buffer" => $house->watts_buffer,
             "watts_stop" => $house->watts_stop,
-            "amp_min" => $house->amp_min,
-            "amp_max" => $house->amp_max,
+            "amps_min" => $house->amps_min,
+            "amps_max" => $house->amps_max,
         ];
         return view('settings', ["data"=>$data]);
 
@@ -85,8 +85,8 @@ class HouseController extends Controller
             $house->watts_below = request('watts_below');
             $house->watts_buffer = request('watts_buffer');
             $house->watts_stop = request('watts_stop');
-            $house->amp_min = request('amp_min');
-            $house->amp_max = request('amp_max');
+            $house->amps_min = request('amps_min');
+            $house->amps_max = request('amps_max');
             $house->save();
         }
 
@@ -100,8 +100,8 @@ class HouseController extends Controller
             "watts_below" => $house->watts_below,
             "watts_buffer" => $house->watts_buffer,
             "watts_stop" => $house->watts_stop,
-            "amp_min" => $house->amp_min,
-            "amp_max" => $house->amp_max,
+            "amps_min" => $house->amps_min,
+            "amps_max" => $house->amps_max,
         ];
 
         return view('settings', ["data"=>$data]);
