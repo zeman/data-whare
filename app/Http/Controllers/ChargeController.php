@@ -100,11 +100,6 @@ class ChargeController extends Controller
                         $amps = CarController::setAmps($car, $change_amps_to);
                         if ($amps) {
                             $debug .= " / amps increased to " . $change_amps_to;
-                            $charge = new Charge();
-                            $charge->time = time();
-                            $charge->action = "amps";
-                            $charge->amps = $change_amps_to;
-                            $charge->save();
                             $car->amps = $change_amps_to;
                             $car->save();
                         }
@@ -125,26 +120,24 @@ class ChargeController extends Controller
                         $amps = CarController::setAmps($car, $change_amps_to);
                         if ($amps) {
                             $debug .= " / amps decreased to " . $change_amps_to;
-                            $charge = new Charge();
-                            $charge->time = time();
-                            $charge->action = "amps";
-                            $charge->amps = $change_amps_to;
-                            $charge->save();
                             $car->amps = $change_amps_to;
                             $car->save();
                         }
                     }
                 } else {
-                    $charge = new Charge();
-                    $charge->time = time();
-                    $charge->action = "amps";
-                    $charge->amps = $car->amps;
-                    $charge->save();
                     $debug .= " / consumption is within the target range of "
                         . $watts_target
                         . " and buffer of "
                         . $watts_percentage_buffer . "%";
                 }
+
+                // always save the current amps so our charts show the history
+                $charge = new Charge();
+                $charge->time = time();
+                $charge->action = "amps";
+                $charge->amps = $car->amps;
+                $charge->save();
+
             }
             // the car is charging so lets get the current battery status as well
             $status = CarController::getStatus($car);
