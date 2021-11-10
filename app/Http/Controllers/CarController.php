@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Car;
+use App\Models\Charge;
+use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -66,6 +68,23 @@ class CarController extends Controller
         if (isset($teslafi['time_to_full_charge'])) {
             //echo " / time to charge is " . $teslafi['time_to_full_charge'] . "h";
             $car->charge_time = $teslafi['time_to_full_charge'];
+        }
+        // check that we're still charging
+        if ($car->charging) {
+            if ($teslafi['charging_state'] == "Disconnected") {
+                $charge = new Charge();
+                $charge->time = time();
+                $charge->action = "end";
+                $charge->amps = 0;
+                $charge->save();
+                $car->charging = false;
+                $car->amps = 0;
+                $log = new Log();
+                $log->time = time();
+                $log->type = 'message';
+                $log->log = 'Car is not connected to charger.';
+                $log->save();
+            }
         }
         $car->save();
         return false;
