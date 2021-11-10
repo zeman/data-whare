@@ -22,7 +22,13 @@ class CarController extends Controller
         if (isset($teslafi['response']['result']) && $teslafi['response']['result'] == 1) {
             return ['status' => 'success', 'message' => ''];
         } else {
-            return ['status' => 'error', 'message' => $teslafi['error']];
+            $message = "";
+            if (isset($teslafi['error'])) {
+                $message = $teslafi['error'];
+            } else{
+                $message = "unknown error";
+            }
+            return ['status' => 'error', 'message' => $message];
         }
     }
 
