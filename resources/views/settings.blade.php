@@ -49,8 +49,7 @@
             </div>
             <div class="form__group">
                 <label>Inverter IP address</label>
-                <p>You'll want to allocate your inverter a static IP via your internet router so it doesn't change on reboot.<br>
-                Static IP is optional for Enphase Envoy.</p>
+                <p>You'll want to allocate your inverter a static IP via your internet router, so it doesn't change on reboot.</p>
                 <input name="solar_ip" type="text" value="{{ $data['solar_ip'] }}">
             </div>
             <div class="form__group">

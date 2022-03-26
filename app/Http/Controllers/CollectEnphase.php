@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Energy;
+use App\Models\House;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -16,8 +17,18 @@ class CollectEnphase extends Controller
      */
     public function __invoke(Request $request)
     {
+        $house = House::all()->first();
+
+        if (!$house) {
+            return;
+        }
+
+        if( $house->solar_ip == "") {
+            return;
+        }
+
         // Get Enphase data from the Envoy on the local network
-        $response = Http::get('http://192.168.1.45/production.json');
+        $response = Http::get('http://' . $house->solar_ip . '/production.json');
         $enphase = $response->json();
 
         // Get and format values
