@@ -31,10 +31,10 @@ Don't expose the Raspberry Pi to the internet as there is currently no protectio
 
 ### Docker on Raspberry Pi
 
-Install [Ubuntu Server 20 LTS 64-bit](https://ubuntu.com/tutorials/how-to-install-ubuntu-on-your-raspberry-pi#1-overview
+Install [Ubuntu Server 22 LTS 64-bit](https://ubuntu.com/tutorials/how-to-install-ubuntu-on-your-raspberry-pi#1-overview
 ) on your Raspberry Pi.
 
-Give your Pi a static IP, login and change the password. Update and upgrade Ubuntu.
+Give your Pi a static IP, login and change the password. `apt-get update`, `apt-get upgrade` and `reboot` Ubuntu.
 
 Install Docker using normal [instructions for Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
 
