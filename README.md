@@ -45,15 +45,6 @@ sudo usermod -aG docker $USER
 newgrp docker
 ```
 
-It's best to then install docker-compose via pip3 using the following commands.
-
-```
-sudo apt-get install libffi-dev libssl-dev
-sudo apt install python3-dev
-sudo apt-get install -y python3 python3-pip
-sudo pip3 install docker-compose
-```
-
 Git clone into a directory where you want to keep the app.
 
 `git clone https://github.com/zeman/data-whare.git data-whare`
