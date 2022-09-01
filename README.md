@@ -100,3 +100,9 @@ To update the app, git pull from the app directory and then rebuild the database
 git pull
 ./vendor/bin/sail artisan migrate:refresh
 ```
+
+If you need to rebuild the docker images from scratch you can use the build and no cache commands.
+
+```
+./vender/bin/sail build --no-cache
+```

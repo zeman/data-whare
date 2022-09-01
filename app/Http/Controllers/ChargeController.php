@@ -46,7 +46,7 @@ class ChargeController extends Controller
         $watts_below_production = $house->watts_below;
         $watts_percentage_buffer = $house->watts_buffer;
         $watts_needed_to_stop = $house->watts_stop;
-        $amps_start = $watts_needed_to_start / 200; // 200 watts per amp at 240v, need to add 120v setting
+        $amps_start = round($watts_needed_to_start / 200); // 200 watts per amp at 240v, need to add 120v setting
 
         // check starting amps is above/below min/max amps
         if ($amps_start < $house->amps_min) {
@@ -140,7 +140,7 @@ class ChargeController extends Controller
 
             }
             // the car is charging so lets get the current battery status as well
-            $status = CarController::getStatus($car);
+            CarController::getStatus($car);
         } else {
             $debug .= "not charging";
             if ($available_5min > $watts_needed_to_start) {
@@ -164,9 +164,8 @@ class ChargeController extends Controller
                         $debug .= " / failed to set amps " . $start['message'];
                         $log_type = "message";
                     }
-                    CarController::getStatus($car);
                 } else {
-                    $debug .= " / couldn't charge " . $start['message'];
+                    $debug .= " / couldn't charge / " . $start['message'];
                     $log_type = "message";
                 }
             } elseif ($production_5min == 0) {

@@ -25,6 +25,13 @@ class CarController extends Controller
             $message = "";
             if (isset($teslafi['error'])) {
                 $message = $teslafi['error'];
+            } elseif (isset($teslafi['response']['reason'])) {
+                $message = $teslafi['response']['reason'];
+                if($message == "requested") {
+                    $message = "start charge has already been requested, check if your charger is showing a red error.";
+                } elseif ($message == "is_charging") {
+                    $message = "car is a already charging manually, stop the charge so that DataWhare can automatically control the charging.";
+                }
             } else{
                 $message = "unknown error";
             }
@@ -88,7 +95,21 @@ class CarController extends Controller
                 $log = new Log();
                 $log->time = time();
                 $log->type = 'message';
-                $log->log = 'Car is not connected to charger.';
+                $log->log = 'Car is not connected to charger anymore.';
+                $log->save();
+            }
+            if ($teslafi['charging_state'] == "Stopped") {
+                $charge = new Charge();
+                $charge->time = time();
+                $charge->action = "end";
+                $charge->amps = 0;
+                $charge->save();
+                $car->charging = false;
+                $car->amps = 0;
+                $log = new Log();
+                $log->time = time();
+                $log->type = 'message';
+                $log->log = 'Car has stopped charging.';
                 $log->save();
             }
         }
